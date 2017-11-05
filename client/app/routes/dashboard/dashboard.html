@@ -1,3 +1,12 @@
-<div>
-  <h1>{{ vm.name }}</h1>
+
+<button class="btn" ng-click="vm.new()">Regenerate</button>
+
+<h1>{{vm.sections.name}}</h1>
+
+<div ng-repeat="section in vm.sections.properties track by $index">
+    <h2>Section {{$index+1}}</h2>
+    <input type="text" ng-model="section.color" ng-change="vm.updateDrawing()" />
 </div>
+
+
+<canvas id="flag"></canvas>
