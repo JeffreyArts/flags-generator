@@ -1,12 +1,15 @@
+<div class="flag-container">
 
-<button class="btn" ng-click="vm.new()">Regenerate</button>
 
-<h1>{{vm.sections.name}}</h1>
+    <h1>Average weigth</h1>
+    <input type="number" min="0" placeholder="Enter weight in KG" ng-model="vm.kg" ng-change="vm.new()" />
 
-<div ng-repeat="section in vm.sections.properties track by $index">
-    <h2>Section {{$index+1}}</h2>
-    <input type="text" ng-model="section.color" ng-change="vm.updateDrawing()" />
+    <div class="hidden" ng-repeat="section in vm.sections.properties track by $index">
+        <h2>Section {{$index+1}}</h2>
+        <input type="text" ng-model="section.color" ng-change="vm.updateDrawing()" />
+    </div>
+
+
+    <canvas id="flag"></canvas>
+
 </div>
-
-
-<canvas id="flag"></canvas>

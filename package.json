@@ -18,7 +18,8 @@
     "angular-ui-router": "^0.4.2",
     "font-awesome": "^4.7.0",
     "lodash-es": "^4.17.4",
-    "ng-component-routing": "^1.0.12"
+    "ng-component-routing": "^1.0.12",
+    "shuffle-seed": "^1.1.6"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",

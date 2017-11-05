@@ -1,8 +1,55 @@
 @import "../../core/constants";
 @import "../../core/mixins";
 
+.flag-container {
+    width: 50vw;
+    position: fixed;
+    left: 25vw;
+    top: 30px;
+}
+
+.flag-container {
+    h1 {
+        display: inline-block;
+        width: 100%;
+        font-family: "Helvetica Neue";
+        font-weight:200;
+        font-size: 32px;
+        text-align: center;
+    }
+
+    input {
+        display: inline-block;
+        width: 80%;
+        margin-left: 10%;
+        font-family: "Helvetica Neue";
+        font-weight: 400;
+        font-size: 24px;
+        padding: 1vw;
+        background-color: transparent;
+        border: 0 none transparent;
+        color: #fff;
+        border-bottom: 3px solid transparent;
+        margin-bottom: 20px;
+        transition: .5s all ease;
+        text-align: center;
+
+        &:focus,
+        &:hover {
+            border-bottom-color: #fff;
+            box-shadow: 0 none;
+            outline:none;
+        }
+    }
+
+}
+
 #flag {
-    width: 300px;
-    height: 200px;
+    width: 50vw;
+    height: 33.333vw;
     border:1px solid #fff;
+}
+
+.hidden {
+    display: none;
 }

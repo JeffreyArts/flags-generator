@@ -1,7 +1,8 @@
 import angular from 'angular';
 import _ from 'lodash';
+const shuffleSeed = require('shuffle-seed');
 
-const flagLayoutService = function(color) {
+const flagLayoutService = function(flagPattern) {
   'ngInject';
 
   const flagWidth = 300;
@@ -75,91 +76,52 @@ const flagLayoutService = function(color) {
 
   //////////////
   // PATTERNS
-  //////////////
+  /////////////
 
-  // FESS
-  const createFess = perc => {
-    if (!perc) {
-      perc = 1 / 3;
-    }
-
-    const int = perc * flagHeight;
-
-    return [
-      {
-        x: 0,
-        y: flagHeight / 2 - int / 2
-      },
-      {
-        x: flagWidth,
-        y: flagHeight / 2 - int / 2
-      },
-      {
-        x: flagWidth,
-        y: flagHeight / 2 + int / 2
-      },
-      {
-        x: 0,
-        y: flagHeight / 2 + int / 2
-      },
-    ];
+  this.layouts = {
+    1: [],
+    2: [
+        [{name: 'fess', value: 0.5}],
+        [{name: 'fess', value: 0.33}],
+        [{name: 'fess', value: 0.2}],
+        [{name: 'pale', value: 0.5}],
+        [{name: 'pale', value: 0.33}],
+        [{name: 'pale', value: 0.2}],
+        [{name: 'bend', value: 0.5}],
+        [{name: 'bend', value: 0.33}],
+        [{name: 'bend', value: 0.2}],
+        [{name: 'bottom', value: 0.5}],
+        [{name: 'bottom', value: 0.25}],
+        [{name: 'bottom', value: 0.75}],
+        [{name: 'right', value: 0.5}],
+        [{name: 'right', value: 0.25}],
+        [{name: 'right', value: 0.75}],
+    ],
+    3: [
+        [{name: 'bottom', value: 0.5}, {name: 'fess', value: 0.5}],
+        [{name: 'bottom', value: 0.5}, {name: 'fess', value: 0.333}],
+        [{name: 'bottom', value: 0.5}, {name: 'fess', value: 0.2}],
+        [{name: 'fess', value: 0.5}, {name: 'fess', value: 0.45}],
+        [{name: 'fess', value: 0.333}, {name: 'fess', value: 0.275}],
+        [{name: 'fess', value: 0.2}, {name: 'fess', value: 0.15}],
+        [{name: 'right', value: 0.5}, {name: 'pale', value: 0.5}],
+        [{name: 'right', value: 0.5}, {name: 'pale', value: 0.333}],
+        [{name: 'right', value: 0.5}, {name: 'pale', value: 0.2}],
+        [{name: 'pale', value: 0.5}, {name: 'pale', value: 0.45}],
+        [{name: 'pale', value: 0.333}, {name: 'pale', value: 0.275}],
+        [{name: 'pale', value: 0.2}, {name: 'pale', value: 0.15}],
+        [{name: 'bend', value: 0.5}, {name: 'bend', value: 0.45}],
+        [{name: 'bend', value: 0.33}, {name: 'bend', value: 0.275}],
+        [{name: 'bend', value: 0.2}, {name: 'bend', value: 0.15}],
+    ]
   };
 
-  // PALE
-  const createPale = perc => {
-    if (!perc) {
-      perc = 1 / 3;
-    }
-
-    const int = perc * flagWidth;
-
-
-    return [
-      {
-        x: flagWidth / 2 - int / 2,
-        y: 0
-      },
-      {
-        x: flagWidth / 2 - int / 2,
-        y: flagHeight
-      },
-      {
-        x: flagWidth / 2 + int / 2,
-        y: flagHeight
-      },
-      {
-        x: flagWidth / 2 + int / 2,
-        y: 0
-      },
-    ];
-  };
-
-  // BEND
-  const createBend = perc => {
-    if (!perc) {
-      perc = 0.1;
-    }
-
-    const intHor = perc * (flagWidth / 3 * 2);
-    const intVert = perc * (flagHeight / 3 * 2);
-
-
-    return [
-      {x: flagWidth - intHor, y: 0},
-      {x: flagWidth, y: 0},
-      {x: flagWidth, y: intVert},
-      {x: intHor, y: flagHeight},
-      {x: 0, y: flagHeight},
-      {x: 0, y: flagHeight - intVert}
-    ];
-  };
-
-  const layouts = [
+  /*
     {
       name: 'Fess 1',
       properties: [
         {dimensions: createBase()},
-        {dimensions: createFess(0.33)}
+        {dimensions: flagPattern.fess(0.33)}
       ]
     },
     {
@@ -167,14 +129,14 @@ const flagLayoutService = function(color) {
       properties: [
         {dimensions: createBase()},
         {dimensions: createBottom(0.5)},
-        {dimensions: createFess(0.33)}
+        {dimensions: flagPattern.fess(0.33)}
       ]
     },
     {
       name: 'Pale 1',
       properties: [
           {dimensions: createBase()},
-          {dimensions: createPale()}
+          {dimensions: flagPattern.pale()}
       ]
     },
     {
@@ -182,35 +144,48 @@ const flagLayoutService = function(color) {
       properties: [
           {dimensions: createBase()},
           {dimensions: createRight(0.5)},
-          {dimensions: createPale()}
+          {dimensions: flagPattern.pale()}
       ]
     },
     {
       name: 'Bend 1',
       properties: [
           {dimensions: createBase()},
-          {dimensions: createBend(0.25)}
+          {dimensions: flagPattern.bend(0.25)}
       ]
     },
     {
       name: 'Bend 2',
       properties: [
           {dimensions: createBase()},
-          {dimensions: createBend(0.25)},
-          {dimensions: createBend(0.2)}
+          {dimensions: flagPattern.bend(0.25)},
+          {dimensions: flagPattern.bend(0.2)}
       ]
     },
 
   ];
+  */
 
 
-  this.getLayout = arr => {
+  this.getLayout = (seed, colors) => {
 
-    if (!arr) {
-      const arr = [color.get()];
+    if (!colors) {
+      const colors = [color.get()];
     }
-    // const int = _.random(layouts.length - 1);
 
+    let layouts = _.clone(this.layouts[colors.length]);
+    if (colors.length === 3) {
+      _.each(this.layouts[2], v => {
+        layouts.push(v);
+      });
+    }
+    layouts = shuffleSeed.shuffle(layouts, seed);
+
+    const layout = layouts[0];
+    const props = [];
+
+    // const int = _.random(layouts.length - 1);
+    /*
     const styleProperties = {
       fess: {
         1: [
@@ -220,12 +195,18 @@ const flagLayoutService = function(color) {
         ],
         2: [
           [createBase()],
-          [createFess(0.666), createFess(0.5), createFess(0.333), createFess(0.2)]
+          [ flagPattern.fess(0.5), flagPattern.fess(0.333), flagPattern.fess(0.2)]
         ],
         3: [
           [createBase()],
-          [createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5)],
-          [createFess(0.666), createFess(0.5), createFess(0.333), createFess(0.2)]
+          [ createBottom(0.5), createBottom(0.5), createBottom(0.5)],
+          [ flagPattern.fess(0.5), flagPattern.fess(0.333), flagPattern.fess(0.2)]
+        ],
+        4: [
+          [createBase()],
+          [createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5), createBottom(0.5)],
+          [createRight(0.5), createRight(0.5), createRight(0.5), createRight(0.5),  flagPattern.fess(0.5), flagPattern.fess(0.333), flagPattern.fess(0.2)],
+          [flagPattern.fess(0.666), flagPattern.fess(0.5), flagPattern.fess(0.333), flagPattern.fess(0.2),  flagPattern.fess(0.45), flagPattern.fess(0.28), flagPattern.fess(0.15)]
         ],
       }
     };
@@ -233,11 +214,11 @@ const flagLayoutService = function(color) {
     const style = 'fess';
     const props = [];
 
-    if (arr.length >= 1) {
-      const sp = styleProperties[style][arr.length];
-      const randomIndex = _.random(sp[1], sp[1].length - 1);
+    if (colors.length >= 1) {
+      const sp = styleProperties[style][colors.length];
+      const randomIndex = _.random(sp[colors.length - 1], sp[colors.length - 1].length - 1);
 
-      _.each(arr, (color, index) => {
+      _.each(colors, (color, index) => {
         if (index === 0) {
           props.push({
             dimensions: sp[index][0],
@@ -252,8 +233,67 @@ const flagLayoutService = function(color) {
         }
       });
     }
+    */
+    //
+    // _.each(colors, (color, index) => {
+    //   if (index === 0) {
+    //     props.push({
+    //       dimensions: createBase(),
+    //       color: color
+    //     });
+    //   } else {
+    //
+    //   }
+    // });
 
-    console.log(props);
+    props.push({
+      dimensions: createBase(),
+      color: colors[0]
+    });
+    console.log("Amount of colors:", colors);
+    for (let i = 1; i < colors.length; i++) {
+        console.log("Chosen Layout",layout)
+        console.log("2.",layout[i - 1], colors[i]);
+      if (!layout || !layout[i - 1]) {
+        break;
+      }
+      switch (layout[i - 1].name) {
+        case 'fess':
+          props.push({
+            dimensions: flagPattern.fess(layout[i - 1].value),
+            color: colors[i]
+          });
+          break;
+        case 'bend':
+          props.push({
+            dimensions: flagPattern.bend(layout[i - 1].value),
+            color: colors[i]
+          });
+          break;
+        case 'pale':
+          props.push({
+            dimensions: flagPattern.pale(layout[i - 1].value),
+            color: colors[i]
+          });
+          break;
+        case 'bottom':
+          props.push({
+            dimensions: createBottom(layout[i - 1].value),
+            color: colors[i]
+          });
+          break;
+        case 'right':
+          props.push({
+            dimensions: createRight(layout[i - 1].value),
+            color: colors[i]
+          });
+          break;
+
+      }
+
+    }
+    console.log("props",props);
+
     return {
       name: 'random',
       properties: props

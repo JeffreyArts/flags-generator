@@ -4,7 +4,7 @@ import routeWrap from 'ng-component-routing';
 import template from './dashboard.html';
 import './dashboard.scss';
 
-const controller = function(flagLayout, color) {
+const controller = function(flagLayout, flag) {
   'ngInject';
 
   this.name = 'dashboard';
@@ -34,10 +34,11 @@ const controller = function(flagLayout, color) {
       drawShape(section.dimensions);
       ctx.fill();
     });
+
   };
 
   this.new = () => {
-    this.sections = flagLayout.getLayout(['red', 'white', 'blue']);
+    this.sections = flag.generate(this.kg*100);
     this.updateDrawing();
   };
 
